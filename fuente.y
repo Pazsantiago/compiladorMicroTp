@@ -6,18 +6,18 @@ extern char *yytext;
 extern int yyleng;
 extern int yylex(void); 
 extern void yyerror(const char*); 
-extern void finalizarPrograma(void);
-
+void finalizarPrograma(int);
+void validarLongitudDelID(char*); 
 %} 
   
 %union{
     char* nombre;
-    int num;
+    int numero;
 }
 
 %token INICIO FIN LEER ESCRIBIR PARENIZQUIERDO PARENDERECHO PUNTOYCOMA COMA ASIGNACION SUMA RESTA FDT PALABRA 
 %token <nombre> ID
-%token <num> NUMEROS   
+%token <tipo> NUMEROS   
  
 %start programa   
  
@@ -27,7 +27,7 @@ extern void finalizarPrograma(void);
 
 
 
-programa: INICIO listaSentencias FIN {finalizarPrograma();} 
+programa: INICIO listaSentencias FIN {finalizarPrograma(1);} 
 ;
 
 listaSentencias: listaSentencias sentencia 
@@ -35,7 +35,7 @@ listaSentencias: listaSentencias sentencia
 ; 
  
 // Sentencia = linea o instrucción del código que tiene expresiones; 
-sentencia: ID {printf("La long es de: %d", yyleng); if(yyleng > 4) yyerror("Superaste el limite de 32 bits");} ASIGNACION expresion PUNTOYCOMA
+sentencia: ID { validarLongitudDelID($1); } ASIGNACION expresion PUNTOYCOMA
 | LEER listaIdentificadores PUNTOYCOMA
 | ESCRIBIR listaExpresiones PUNTOYCOMA
 ;
@@ -71,11 +71,22 @@ int yywrap(){
   
 void yyerror (const char* s) 
 { 
-    printf("\n Error: %s \n", s);
+    printf("\nError: %s\n", s);
 }
- 
-void finalizarPrograma(){
-    printf("El programa ha compilado correctamente... :)");
+
+void validarLongitudDelID(char* id){
+    if (strlen(id) > 32) {
+        yyerror("Identificador supera la longitud máxima de 32 caracteres");
+        finalizarPrograma(0);
+    } 
+} 
+  
+void finalizarPrograma(int estado){
+    if(estado) {
+        printf("El programa ha compilado correctamente... :)");
+    } else {
+        printf("El programa ha fallado.... :(");
+    }
     exit(1);
 }
 

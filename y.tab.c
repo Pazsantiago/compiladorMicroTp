@@ -77,8 +77,8 @@ extern char *yytext;
 extern int yyleng;
 extern int yylex(void); 
 extern void yyerror(const char*); 
-extern void finalizarPrograma(void);
-
+void finalizarPrograma(int);
+void validarLongitudDelID(char*); 
 
 
 /* Line 189 of yacc.c  */
@@ -154,7 +154,7 @@ typedef union YYSTYPE
 #line 13 "fuente.y"
 
     char* nombre;
-    int num;
+    int numero;
 
 
 
@@ -1378,14 +1378,14 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 30 "fuente.y"
-    {finalizarPrograma();}
+    {finalizarPrograma(1);}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
 #line 38 "fuente.y"
-    {printf("La long es de: %d", yyleng); if(yyleng > 4) yyerror("Superaste el limite de 32 bits");}
+    { validarLongitudDelID((yyvsp[(1) - (1)].nombre)); }
     break;
 
 
@@ -1614,11 +1614,22 @@ int yywrap(){
   
 void yyerror (const char* s) 
 { 
-    printf("\n Error: %s \n", s);
+    printf("\nError: %s\n", s);
 }
- 
-void finalizarPrograma(){
-    printf("El programa ha compilado correctamente... :)");
+
+void validarLongitudDelID(char* id){
+    if (strlen(id) > 32) {
+        yyerror("Identificador supera la longitud máxima de 32 caracteres");
+        finalizarPrograma(0);
+    } 
+} 
+  
+void finalizarPrograma(int estado){
+    if(estado) {
+        printf("El programa ha compilado correctamente... :)");
+    } else {
+        printf("El programa ha fallado.... :(");
+    }
     exit(1);
 }
 

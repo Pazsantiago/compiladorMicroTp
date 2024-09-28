@@ -1,5 +1,6 @@
-INICIO
-   a := 1;
+inicio
+   asdasdfwaegfawegtwaregtweartgeawrtaewrtesrt := 1;
    b := a;
-   ESCRIBIR (a + b);
-FIN
+   leer a, b;
+   escribir (a + b);
+fin

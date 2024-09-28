@@ -84,7 +84,7 @@ typedef union YYSTYPE
 #line 13 "fuente.y"
 
     char* nombre;
-    int num;
+    int numero;
 
 
 

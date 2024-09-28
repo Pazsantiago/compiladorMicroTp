@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+extern int yyparse(void);
 #include "y.tab.h"
 extern FILE *yyin;
 %}
@@ -10,10 +11,10 @@ extern FILE *yyin;
 %option noyywrap
 
 
-inicio         "INICIO"  
-fin            "FIN" 
-leer           "LEER"
-escribir       "ESCRIBIR"
+inicio         "inicio"  
+fin            "fin" 
+leer           "leer"
+escribir       "escribir"
 parenizquierdo "("
 parenderecho   ")"
 puntoycoma     ";"
@@ -23,8 +24,8 @@ suma           "+"
 resta          "-"
 fdt            "\0"
 numeros        [0-9][0-9]*
-palabra        [a-zA-Z]
-id             {palabra}({palabra}{numeros})* 
+palabra        [a-zA-Z_]
+id             {palabra}({palabra}|{numeros})* 
  
 
 %%
@@ -41,8 +42,8 @@ id             {palabra}({palabra}{numeros})*
 {suma}           { return SUMA; }
 {resta}          { return RESTA; }
 {fdt}            { return FDT; }
-{id}             { return ID; } 
-{numeros}        { yylval.num = atoi(yytext); return NUMEROS; }
+{id}             { yylval.nombre = strdup(yytext); return ID; } 
+{numeros}        { yylval.numero = atoi(yytext); return NUMEROS; }
 
 
 %%
@@ -56,7 +57,7 @@ int main(int argc, char* argv[]){
         return 1;
     }
     
-    printf("\nArchivo abierto exitosamente\n");
+    printf("\nArchivo abierto exitosamente");
    
     yyparse();
 
