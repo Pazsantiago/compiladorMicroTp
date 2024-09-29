@@ -1,6 +1,6 @@
 inicio
-   asdasdfwaegfawegtwaregtweartgeawrtaewrtesrt := 1;
+   a := 1;
    b := a;
    leer a, b;
-   escribir (a + b);
-fin
+   escribir (a * (b / b));
+fin 

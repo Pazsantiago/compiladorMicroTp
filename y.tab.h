@@ -50,10 +50,12 @@
      ASIGNACION = 266,
      SUMA = 267,
      RESTA = 268,
-     FDT = 269,
-     PALABRA = 270,
-     ID = 271,
-     NUMEROS = 272
+     MULTIPLICACION = 269,
+     DIVISION = 270,
+     FDT = 271,
+     PALABRA = 272,
+     ID = 273,
+     NUMEROS = 274
    };
 #endif
 /* Tokens.  */
@@ -68,10 +70,12 @@
 #define ASIGNACION 266
 #define SUMA 267
 #define RESTA 268
-#define FDT 269
-#define PALABRA 270
-#define ID 271
-#define NUMEROS 272
+#define MULTIPLICACION 269
+#define DIVISION 270
+#define FDT 271
+#define PALABRA 272
+#define ID 273
+#define NUMEROS 274
 
 
 
@@ -89,7 +93,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 93 "y.tab.h"
+#line 97 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

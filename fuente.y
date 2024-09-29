@@ -15,7 +15,7 @@ void validarLongitudDelID(char*);
     int numero;
 }
 
-%token INICIO FIN LEER ESCRIBIR PARENIZQUIERDO PARENDERECHO PUNTOYCOMA COMA ASIGNACION SUMA RESTA FDT PALABRA 
+%token INICIO FIN LEER ESCRIBIR PARENIZQUIERDO PARENDERECHO PUNTOYCOMA COMA ASIGNACION SUMA RESTA MULTIPLICACION DIVISION FDT PALABRA 
 %token <nombre> ID
 %token <tipo> NUMEROS   
  
@@ -54,6 +54,8 @@ expresion: primaria
 
 operador: SUMA  
 | RESTA
+| MULTIPLICACION
+| DIVISION
 ;
 
 primaria: ID 
@@ -62,8 +64,18 @@ primaria: ID
 ;
 
 %% 
+/* Por si se quiere utilizar por linea de comando, se descomenta esto /*
 
+/* 
+int main(){ 
+    printf("Iniciando análisis ascendente recursivo...\n");
+ 
+        yyparse(); 
 
+    printf("Finalizando análisis ascendente recursivo...\n");
+    return 1;
+}
+*/
 
 int yywrap(){
     return 1;
@@ -83,9 +95,9 @@ void validarLongitudDelID(char* id){
   
 void finalizarPrograma(int estado){
     if(estado) {
-        printf("El programa ha compilado correctamente... :)");
+        printf("\nEl programa ha compilado correctamente... :)");
     } else {
-        printf("El programa ha fallado.... :(");
+        printf("\nEl programa ha fallado.... :(");
     }
     exit(1);
 }

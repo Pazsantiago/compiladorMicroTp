@@ -22,6 +22,8 @@ coma           ","
 asignacion     ":="
 suma           "+"
 resta          "-"
+multiplicacion "*"
+division       "/"
 fdt            "\0"
 numeros        [0-9][0-9]*
 palabra        [a-zA-Z_]
@@ -30,25 +32,26 @@ id             {palabra}({palabra}|{numeros})*
 
 %%
 
-{inicio}         { return INICIO; }  
-{fin}            { return FIN; } 
-{leer}           { return LEER; }
-{escribir}       { return ESCRIBIR; }
-{parenizquierdo} { return PARENIZQUIERDO; }
-{parenderecho}   { return PARENDERECHO; }
-{puntoycoma}     { return PUNTOYCOMA; }
-{coma}           { return COMA; }
-{asignacion}     { return ASIGNACION; }
-{suma}           { return SUMA; }
-{resta}          { return RESTA; }
-{fdt}            { return FDT; }
-{id}             { yylval.nombre = strdup(yytext); return ID; } 
-{numeros}        { yylval.numero = atoi(yytext); return NUMEROS; }
+{inicio}         { mostrarToken("inicio"); return INICIO; }  
+{fin}            { mostrarToken("fin"); return FIN; } 
+{leer}           { mostrarToken("leer"); return LEER; }
+{escribir}       { mostrarToken("escribir"); return ESCRIBIR; }
+{parenizquierdo} { mostrarToken("parentesis izquierdo"); return PARENIZQUIERDO; }
+{parenderecho}   { mostrarToken("parentesis derecho"); return PARENDERECHO; }
+{puntoycoma}     { mostrarToken("punto y coma"); return PUNTOYCOMA; }
+{coma}           { mostrarToken("coma"); return COMA; }
+{asignacion}     { mostrarToken("asignacion"); return ASIGNACION; }
+{suma}           { mostrarToken("suma"); return SUMA; }
+{multiplicacion} { mostrarToken("multiplicacion"); return MULTIPLICACION; }
+{division}       { mostrarToken("division"); return DIVISION; }
+{fdt}            { mostrarToken("fin de texto"); return FDT; }
+{id}             { mostrarToken("identificador"); yylval.nombre = strdup(yytext); return ID; } 
+{numeros}        { mostrarToken("numeros"); yylval.numero = atoi(yytext); return NUMEROS; }
 
 
 %%
 
-// Esto es necesario por si se analiza el código de micro en un archivo por separado
+// Esto es necesario por si se analiza el código de micro en un archivo por separado, sino comentarlo.
 int main(int argc, char* argv[]){
     int l;
     // Apertura de archivo fuente
@@ -57,10 +60,14 @@ int main(int argc, char* argv[]){
         return 1;
     }
     
-    printf("\nArchivo abierto exitosamente");
+    printf("\nArchivo abierto exitosamente\n");
    
     yyparse();
 
     fclose(yyin);
     return 0;
+}
+
+void mostrarToken(char* token){
+    printf("\nSe ha insertado un token de: %s", token);
 }
